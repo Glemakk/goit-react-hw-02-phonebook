@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { List, Item } from './ContactList.styled'
+import Button from '../Button/Button'
 
 export default class ContactList extends Component {
   state = {
@@ -12,31 +13,22 @@ export default class ContactList extends Component {
     })
   }
   render() {
-    const { contacts } = this.props
+    const { contacts, onClick } = this.props
+    // console.log(contacts)
     const { isShow } = this.state
     return (
       <List>
-        {contacts === ''
-          ? isShow
-          : contacts.map((contact) => (
-              <Item key={contact.id}>
-                {contact.name}: {contact.number}
-              </Item>
-            ))}
+        {contacts.map((contact) => (
+          <Item key={contact.id}>
+            {contact.name}: {contact.number}
+            <Button
+              type="button"
+              text="Delete"
+              onClick={() => onClick(contact.id)}
+            />
+          </Item>
+        ))}
       </List>
     )
   }
 }
-
-//=========================================================================
-// function ContactList({ contacts, name }) {
-//   return (
-//     <List>
-//       {contacts.map((contact) => (
-//         <li>{contact}</li>
-//       ))}
-//     </List>
-//   )
-// }
-
-// export default ContactList

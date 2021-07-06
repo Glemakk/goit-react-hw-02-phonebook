@@ -1,68 +1,63 @@
 import React, { Component } from 'react'
 import Button from '../Button/Button'
 // import { List } from './ContactForm.styled'
-import { Form } from './ContactForm.styled'
+import { FcPhoneAndroid, FcBusinessContact } from 'react-icons/fc'
+import { IconContext } from 'react-icons'
+import { Form, InputDiv, Input } from './ContactForm.styled'
 
 export default class ContactForm extends Component {
-  //   state = {
-  //     contacts: [
-  //       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  //       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  //       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  //       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  //     ],
-  //     name: '',
-  //     number: '',
-  //   }
-
-  //   handleChange = ({ target }) => {
-  //     const value = target.value
-  //     const name = target.name
-  //     console.log('value=>', value)
-  //     this.setState({
-  //       [name]: value,
-  //     })
-  //   }
-
-  //   handleSubmit = (e) => {
-  //     const { number, name } = this.state
-  //     e.preventDefault()
-  //     this.setState({
-  //       contacts: [...contacts, {name, number}],
-  //       name: '',
-  //       number: '',
-  //     }))
-  //   }
+  handleChange = ({ target }) => {
+    const value = target.value
+    const name = target.name
+    // console.log('value=>', value)
+    this.setState({
+      [name]: value,
+    })
+  }
 
   render() {
-    const { onSubmit, onChange, onClick, contacts, name, number } = this.props
+    const { onSubmit, onChange, name, number } = this.props
     return (
       <div>
         <Form onSubmit={onSubmit}>
           <label>
             <h2>Name</h2>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={onChange}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-              required
-            />
+            <InputDiv>
+              <IconContext.Provider value={{ size: '23px' }}>
+                <FcBusinessContact />
+              </IconContext.Provider>
+              &nbsp;
+              <Input
+                type="text"
+                name="name"
+                value={name}
+                onChange={onChange}
+                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+                required
+                autoComplete="off"
+              />
+            </InputDiv>
           </label>
 
           <label>
             <h2>Number</h2>
-            <input
-              type="tel"
-              name="number"
-              value={number}
-              onChange={onChange}
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-              required
-            />
+            <InputDiv>
+              <IconContext.Provider value={{ size: '23px' }}>
+                <FcPhoneAndroid />
+              </IconContext.Provider>
+              &nbsp;
+              <Input
+                type="tel"
+                name="number"
+                value={number}
+                onChange={onChange}
+                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+                required
+                autoComplete="off"
+              />
+            </InputDiv>
           </label>
           <Button text="Add contact" />
         </Form>
@@ -70,23 +65,3 @@ export default class ContactForm extends Component {
     )
   }
 }
-
-// class ContactForm extend Component({ onClick }) {
-//   return (
-//     <div>
-//       <h2>Name</h2>
-//       <Form>
-//         <input
-//           type="text"
-//           name="name"
-//           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-//           required
-//         />
-//         <Button text="Add contact" type="button" onClick={onClick} />
-//       </Form>
-//     </div>
-//   )
-// }
-
-// export default ContactForm

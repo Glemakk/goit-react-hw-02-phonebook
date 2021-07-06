@@ -1,25 +1,23 @@
 import React, { Component } from 'react'
 import ContactForm from './components/ContactForm/ContactForm'
 import ContactList from './components/ContactList/ContactList'
+import Filter from './components/Filter/Filter'
 import Container from './components/Container/Container'
 import { v4 as uuidv4 } from 'uuid'
 
 export default class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [{ id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' }],
     filter: '',
-    name: '',
-    number: '',
   }
 
-  handleChange = ({ target }) => {
-    const value = target.value
-    const name = target.name
+  // findContact = () => {
+  //   const {contacts} = this.state
+  //   return this.setState({contacts.find(contact => contact.name.includes(name))})
+  // }
+  handleChange = ({ currentTarget }) => {
+    const value = currentTarget.value
+    const name = currentTarget.name
     // console.log('value=>', value)
     this.setState({
       [name]: value,
@@ -36,13 +34,18 @@ export default class App extends Component {
     e.preventDefault()
     const randomID = uuidv4()
 
-    const { name, number } = this.state
-    this.setState((prev) => ({
-      contacts: [
-        ...prev.contacts,
-        { id: randomID, name: this.state.name, number: this.state.number },
-      ],
-    }))
+    const { name, number, contacts } = this.state
+    // const findContact = contacts.find((contact) => console.log(contact.name))
+    // const findContact = contacts.find((contact) => contact.name.includes(name))
+    // console.log(findContact)
+
+    const findContact = contacts.find((contact) => contact.name.includes(name))
+
+    findContact
+      ? alert(`${name} is already in contacts`)
+      : this.setState({
+          contacts: [...contacts, { id: randomID, name: name, number: number }],
+        })
     this.clearForm()
   }
 
@@ -50,22 +53,39 @@ export default class App extends Component {
     this.setState({ number: '', name: '' })
   }
 
+  getVisibleContacts = () => {
+    const { filter, contacts } = this.state
+    const normalizedFilter = filter.toLowerCase()
+    return contacts.filter((item) =>
+      item.name.toLowerCase().includes(normalizedFilter),
+    )
+  }
+
+  deleteContact = (contactId) => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter(
+        (contact) => contact.id !== contactId,
+      ),
+    }))
+  }
+
   render() {
-    const { contacts, name, number } = this.state
+    const { name, number, filter } = this.state
+    const visibleContacts = this.getVisibleContacts()
     return (
       <Container>
         <h1>Phonebook</h1>
         <ContactForm
           onSubmit={this.handleSubmit}
-          contacts={contacts}
+          // contacts={contacts}
           name={name}
           number={number}
           onChange={this.handleChange}
         />
 
         <h2>Contacts</h2>
-        {/* <Filter /> */}
-        <ContactList contacts={contacts} name={name} />
+        <Filter onChange={this.handleChange} filter={filter} />
+        <ContactList contacts={visibleContacts} onClick={this.deleteContact} />
       </Container>
     )
   }
