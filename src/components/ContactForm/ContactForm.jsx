@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from '../Button/Button'
-// import { List } from './ContactForm.styled'
+
 import { FcPhoneAndroid, FcBusinessContact } from 'react-icons/fc'
 import { IconContext } from 'react-icons'
 import { Form, InputDiv, Input } from './ContactForm.styled'
@@ -13,7 +13,6 @@ export default class ContactForm extends Component {
   handleChange = ({ target }) => {
     const value = target.value
     const name = target.name
-    console.log('value=>', value)
     this.setState({
       [name]: value,
     })
@@ -21,8 +20,9 @@ export default class ContactForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    const { name, number } = this.state
     const { onSubmit } = this.props
-    onSubmit(this.state.name, this.state.number)
+    onSubmit(name, number)
     this.clearForm()
   }
 

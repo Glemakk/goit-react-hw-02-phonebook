@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import React from 'react'
 import { FcSearch } from 'react-icons/fc'
 import { InputDiv } from '../ContactForm/ContactForm.styled'
@@ -27,4 +29,8 @@ export default function Filter({ filter, onChange }) {
       </FilterContainer>
     </label>
   )
+}
+Filter.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  filter: PropTypes.string.isRequired,
 }
