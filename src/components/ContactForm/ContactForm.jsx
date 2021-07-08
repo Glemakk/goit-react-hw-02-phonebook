@@ -6,20 +6,35 @@ import { IconContext } from 'react-icons'
 import { Form, InputDiv, Input } from './ContactForm.styled'
 
 export default class ContactForm extends Component {
+  state = {
+    name: '',
+    number: '',
+  }
   handleChange = ({ target }) => {
     const value = target.value
     const name = target.name
-    // console.log('value=>', value)
+    console.log('value=>', value)
     this.setState({
       [name]: value,
     })
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { onSubmit } = this.props
+    onSubmit(this.state.name, this.state.number)
+    this.clearForm()
+  }
+
+  clearForm = () => {
+    this.setState({ number: '', name: '' })
+  }
+
   render() {
-    const { onSubmit, onChange, name, number } = this.props
+    const { number, name } = this.state
     return (
       <div>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <label>
             <h2>Name</h2>
             <InputDiv>
@@ -31,7 +46,7 @@ export default class ContactForm extends Component {
                 type="text"
                 name="name"
                 value={name}
-                onChange={onChange}
+                onChange={this.handleChange}
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                 required
@@ -51,7 +66,7 @@ export default class ContactForm extends Component {
                 type="tel"
                 name="number"
                 value={number}
-                onChange={onChange}
+                onChange={this.handleChange}
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
                 required

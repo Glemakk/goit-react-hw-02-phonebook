@@ -11,53 +11,35 @@ export default class App extends Component {
     filter: '',
   }
 
-  // findContact = () => {
-  //   const {contacts} = this.state
-  //   return this.setState({contacts.find(contact => contact.name.includes(name))})
-  // }
   handleChange = ({ currentTarget }) => {
     const value = currentTarget.value
     const name = currentTarget.name
-    // console.log('value=>', value)
+
     this.setState({
       [name]: value,
     })
   }
 
-  //   addContact = () => {
-  //     this.setState((prevState) => ({
-  //       contacts: [...prevState.contacts, this.state.name],
-  //     }))
-  //   }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
+  handleSubmit = (name, number) => {
     const randomID = uuidv4()
+    const newContact = { id: randomID, name, number }
 
-    const { name, number, contacts } = this.state
-    // const findContact = contacts.find((contact) => console.log(contact.name))
-    // const findContact = contacts.find((contact) => contact.name.includes(name))
-    // console.log(findContact)
-
-    const findContact = contacts.find((contact) => contact.name.includes(name))
+    const findContact = this.state.contacts.find((contact) =>
+      contact.name.includes(name),
+    )
 
     findContact
       ? alert(`${name} is already in contacts`)
-      : this.setState({
-          contacts: [...contacts, { id: randomID, name: name, number: number }],
-        })
-    this.clearForm()
-  }
-
-  clearForm = () => {
-    this.setState({ number: '', name: '' })
+      : this.setState((prevState) => ({
+          contacts: [...prevState.contacts, newContact],
+        }))
   }
 
   getVisibleContacts = () => {
     const { filter, contacts } = this.state
     const normalizedFilter = filter.toLowerCase()
-    return contacts.filter((item) =>
-      item.name.toLowerCase().includes(normalizedFilter),
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(normalizedFilter),
     )
   }
 
@@ -70,18 +52,12 @@ export default class App extends Component {
   }
 
   render() {
-    const { name, number, filter } = this.state
+    const { filter } = this.state
     const visibleContacts = this.getVisibleContacts()
     return (
       <Container>
         <h1>Phonebook</h1>
-        <ContactForm
-          onSubmit={this.handleSubmit}
-          // contacts={contacts}
-          name={name}
-          number={number}
-          onChange={this.handleChange}
-        />
+        <ContactForm onSubmit={this.handleSubmit} />
 
         <h2>Contacts</h2>
         <Filter onChange={this.handleChange} filter={filter} />
